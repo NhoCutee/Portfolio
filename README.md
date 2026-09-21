@@ -2,7 +2,7 @@
 
 A modern, responsive portfolio website showcasing my work as a Full Stack Developer. Built with Next.js 15, TypeScript, Tailwind CSS, and Shadcn UI. Features a blog system, project showcase, work experience timeline, and contact form with Telegram integration.
 
-![Portfolio Preview]()
+![Portfolio Preview](/public/meta/hero.png)
 
 > **Credits:** This portfolio is built on top of the amazing [Sleek Portfolio](https://github.com/ramxcodes/sleek-portfolio) template created by [@ramxcodes](https://github.com/ramxcodes). The original template is licensed under the MIT License and has been customized for my personal use.
 
