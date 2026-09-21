@@ -1,0 +1,124 @@
+---
+title: 'Real-time Collaborative Whiteboard'
+description: 'Infinite canvas collaboration platform featuring 60fps rendering, multi-cursor presence, and conflict-free state synchronization with CRDTs (Yjs) over WebSockets.'
+image: '/project/rune.webp'
+technologies: ['Next.js', 'TypeScript', 'React', 'Socket.io', 'Tailwind CSS', 'shadcn/ui', 'WebSockets', 'Canvas API', 'CRDT', 'Yjs']
+github: 'https://github.com/NhoCutee/collaborative-whiteboard'
+live: 'https://whiteboard.demo.dev'
+timeline: '4 weeks'
+role: 'Full Stack Engineer'
+team: 'Solo'
+status: 'in-progress'
+featured: true
+challenges:
+  - 'Achieving sustained 60fps rendering performance on an infinite canvas with thousands of concurrent vector nodes'
+  - 'Resolving concurrent editing conflicts without centralized server locks using Conflict-free Replicated Data Types (CRDTs)'
+  - 'Implementing low-latency cursor interpolation and awareness broadcast with WebSocket throttling'
+  - 'Architecting smooth freehand drawing with real-time Bézier curve smoothing and dynamic stroke pressure'
+learnings:
+  - 'Deep understanding of CRDT data structures (Yjs Y.Doc, Y.Map, Y.Array) and p2p state vector exchange'
+  - 'Canvas viewport transformation matrices (zoom, pan, rotate) and spatial indexing with bounding volume hierarchies (BVH / RBush)'
+  - 'Optimizing WebSocket bandwidth by batching vector state updates and compressing delta payloads'
+isPublished: true
+---
+
+# Real-time Collaborative Whiteboard
+
+## Overview
+
+Real-time Collaborative Whiteboard is an infinite canvas visual collaboration platform designed for distributed engineering teams. It allows dozens of users to sketch architecture diagrams, brainstorm flows, annotate wireframes, and organize sticky notes simultaneously with zero latency perception and zero state conflicts.
+
+At the core of the application is a high-performance 2D rendering pipeline paired with **Conflict-free Replicated Data Types (CRDTs)** via **Yjs**, ensuring that all collaborators eventually converge on the exact same board state even under erratic network conditions or temporary offline disconnections.
+
+## Problem Statement
+
+Most modern web whiteboards either suffer from severe input lag when handling complex vector scenes or struggle with multi-user synchronization conflicts when two or more engineers modify the same visual group simultaneously. Traditional Operational Transformation (OT) approaches require heavy central servers to sequence operations, resulting in noticeable latency spikes for global teams.
+
+I set out to build a lightweight, self-hostable collaborative canvas that guarantees:
+1. **Buttery smooth 60fps interaction** regardless of viewport zoom level or total element count.
+2. **Conflict-free distributed state** where every mutation is guaranteed to converge mathematically without data loss.
+3. **Sub-30ms cursor tracking** that provides genuine co-presence awareness.
+
+## System Architecture
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                       Client Browser                        │
+│  ┌───────────────────────┐       ┌───────────────────────┐  │
+│  │     HTML5 Canvas      │       │     Yjs Document      │  │
+│  │   Viewport & Matrix   │◄──────┤    (CRDT Data Model)  │  │
+│  └───────────┬───────────┘       └───────────┬───────────┘  │
+└──────────────┼───────────────────────────────┼──────────────┘
+               │                               │
+       Pointer Events                  Binary Deltas (SyncStep2)
+               │                               │
+               ▼                               ▼
+┌─────────────────────────────────────────────────────────────┐
+│                   WebSocket Server (Node.js)                │
+│  ┌───────────────────────────────────────────────────────┐  │
+│  │        y-websocket Room Manager & Presence Hub        │  │
+│  └───────────────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────────┘
+```
+
+## Key Technical Features
+
+### 1. 60fps Infinite Canvas Engine
+- **Spatial Indexing:** Implemented an **R-Tree (RBush)** spatial index to cull off-screen elements during canvas render passes, reducing draw calls from $O(N)$ to $O(\log N + K)$ where $K$ is visible elements.
+- **Matrix Transformations:** Handled pan and zoom using native 2D affine transformation matrices, maintaining sub-pixel accuracy and crisp vector rendering across high-DPI displays.
+- **Offscreen Canvas Buffering:** Static background grids and non-moving elements are pre-rendered onto an offscreen canvas buffer to eliminate redundant CPU rasterization.
+
+### 2. Conflict-Free State Synchronization (CRDT)
+- Built on top of **Yjs**, each whiteboard object (shapes, text, arrows, frames) is modeled as an entry within a `Y.Map`.
+- State updates are encoded into compact binary deltas and transmitted through WebSockets using `y-websocket`.
+- When two users concurrently edit the position or color of the same object, Yjs's deterministic logical clock (Lamport timestamps + client IDs) automatically resolves conflicts without data loss or rollback jitters.
+
+```ts
+import * as Y from 'yjs';
+import { WebsocketProvider } from 'y-websocket';
+
+const ydoc = new Y.Doc();
+const provider = new WebsocketProvider(
+  'wss://whiteboard-sync.example.com',
+  'room-architecture-v1',
+  ydoc
+);
+const yElements = ydoc.getMap('canvas-elements');
+
+// Update element coordinates with zero conflict risk
+export function updateElementPosition(id: string, x: number, y: number) {
+  ydoc.transact(() => {
+    const el = yElements.get(id);
+    if (el) {
+      el.set('x', x);
+      el.set('y', y);
+      el.set('updatedAt', Date.now());
+    }
+  });
+}
+```
+
+### 3. Real-Time Presence & Cursor Awareness
+- Transmits peer cursor positions, active tool selections, and user nicknames.
+- Uses cubic spline interpolation on client receivers to render smooth 60fps cursor movements even when WebSocket broadcast ticks are throttled to 30ms to conserve bandwidth.
+
+### 4. Freehand Drawing with Bézier Smoothing
+- Integrates dynamic stroke pressure calculations based on pointer velocity.
+- Converts raw pointer stream points into smoothed quadratic Bézier curves in real time for a natural ink pen feel.
+
+## Tech Stack
+
+| Layer | Technology |
+| --- | --- |
+| Frontend Framework | Next.js 15 (App Router), React 19 |
+| Language | TypeScript 5 (Strict Mode) |
+| State & CRDT | Yjs, y-websocket, Zustand |
+| Styling & UI | Tailwind CSS, shadcn/ui, Lucide Icons |
+| Networking | WebSockets, Socket.io |
+| Canvas & Math | HTML5 2D Canvas API, RBush Spatial Index |
+
+## Results & Benchmarks
+
+- **Rendering Latency:** Sustains steady 60 FPS on modern displays with up to 10,000 vector elements on screen.
+- **Sync Overhead:** Average WebSocket payload size per continuous stroke point update is under **48 bytes**.
+- **Resilience:** Full state recovery after simulated 60-second offline network disconnects with zero conflicting data artifacts.

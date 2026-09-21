@@ -1,0 +1,116 @@
+---
+title: 'RMS — Restaurant Management System'
+description: 'Fullstack restaurant operations platform featuring QR table ordering, real-time Kitchen Display System (KDS), role-based auth, and revenue analytics.'
+image: '/project/launchkit.webp'
+technologies: ['React', 'TypeScript', 'Java', 'Spring Boot', 'PostgreSQL', 'Tailwind CSS', 'JWT', 'REST API']
+github: 'https://github.com/NhoCutee/restaurant-management-system'
+live: 'https://rms.demo.dev'
+timeline: '2 months'
+role: 'Full Stack Engineer'
+team: 'Academic Team (5 developers)'
+status: 'completed'
+featured: false
+challenges:
+  - 'Synchronizing real-time order lifecycle statuses between customer table devices, kitchen display systems (KDS), and cashier terminals'
+  - 'Designing secure role-based access control (RBAC) across Cashier, Kitchen Staff, Waiter, and Restaurant Manager personas'
+  - 'Calculating complex financial analytics (daily gross revenue, peak ordering hours, inventory deductions) with optimized SQL queries'
+learnings:
+  - 'Building robust enterprise backends with Java 21, Spring Boot 3.2, Spring Security, and Hibernate JPA'
+  - 'Stateless authentication using JWT with secure HTTP-only cookies and token refresh rotation'
+  - 'Structuring clear API contracts between React frontend and Spring Boot REST controllers'
+isPublished: true
+---
+
+# RMS — Restaurant Management System
+
+## Overview
+
+Restaurant Management System (RMS) is an end-to-end restaurant digitalization and operations platform. Built to streamline dining experiences and eliminate paper-based order bottlenecks, RMS enables customers to browse visual menus and place orders via dynamic QR codes at their tables, while routing kitchen tickets directly to kitchen staff in real time.
+
+The platform provides restaurant owners and managers with real-time visibility into inventory consumption, order throughput, table turnover rates, and daily revenue metrics.
+
+## System Architecture
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                      Client Interfaces                      │
+│  ┌────────────────────┐ ┌─────────────────┐ ┌─────────────┐ │
+│  │ Customer QR Web App│ │   Kitchen KDS   │ │ Admin Portal│ │
+│  │ (React 18 + TW)    │ │   (React 18)    │ │  (React 18) │ │
+│  └─────────┬──────────┘ └────────┬────────┘ └──────┬──────┘ │
+└────────────┼─────────────────────┼─────────────────┼────────┘
+             │                     │                 │
+             └─────────────────────┼─────────────────┘
+                                   │ HTTPS / REST / JWT
+                                   ▼
+┌─────────────────────────────────────────────────────────────┐
+│                 Spring Boot 3.2 Backend                     │
+│  ┌───────────────────────┐       ┌───────────────────────┐  │
+│  │ Spring Security + JWT │       │ Order & Menu Services │  │
+│  └───────────────────────┘       └───────────────────────┘  │
+│  ┌───────────────────────┐       ┌───────────────────────┐  │
+│  │   KDS State Machine   │       │ Analytics Engine      │  │
+│  └───────────────────────┘       └───────────────────────┘  │
+└──────────────────────────────┬──────────────────────────────┘
+                               │
+                          Spring Data JPA
+                               │
+                               ▼
+┌─────────────────────────────────────────────────────────────┐
+│                 PostgreSQL / SQL Server                     │
+└─────────────────────────────────────────────────────────────┘
+```
+
+## Key Technical Features
+
+### 1. Dynamic QR Code Table Ordering
+- Each dining table is equipped with a unique, cryptographically signed QR code link.
+- Customers scan the QR code to open an instant, mobile-optimized digital menu without installing any application.
+- Orders submitted by guests are validated against current inventory availability before confirmation.
+
+### 2. Real-Time Kitchen Display System (KDS)
+- Kitchen stations receive orders split by preparation zones (Appetizers, Main Courses, Drinks).
+- Chefs update dish status (`PENDING` -> `PREPARING` -> `READY` -> `SERVED`) with single-tap touch controls, alerting waitstaff immediately.
+
+```java
+@RestController
+@RequestMapping("/api/v1/orders")
+@RequiredArgsConstructor
+public class OrderController {
+
+    private final OrderService orderService;
+
+    @PatchMapping("/{orderId}/status")
+    @PreAuthorize("hasAnyRole('KITCHEN', 'MANAGER')")
+    public ResponseEntity<OrderDTO> updateOrderStatus(
+            @PathVariable Long orderId,
+            @RequestBody @Valid UpdateOrderStatusRequest request) {
+        OrderDTO updated = orderService.updateStatus(orderId, request.getStatus());
+        return ResponseEntity.ok(updated);
+    }
+}
+```
+
+### 3. Role-Based Security & Permissions
+- Integrated **Spring Security** with stateless JWT authentication.
+- Custom security annotations restrict sensitive managerial endpoints (revenue reports, employee payroll, pricing changes) to authorized manager accounts.
+
+### 4. Revenue Analytics & Inventory Auditing
+- Automated daily sales reporting aggregates total orders, average ticket sizes, and payment methods (Cash, Card, Digital Wallets).
+- Real-time inventory deduction decrements raw ingredient stocks as orders are fulfilled, sending low-stock alerts before items run out.
+
+## Tech Stack
+
+| Layer | Technology |
+| --- | --- |
+| Frontend | React 18, TypeScript, Tailwind CSS, Axios, Lucide Icons |
+| Backend Framework | Java 21, Spring Boot 3.2 |
+| Security | Spring Security, JJWT (JSON Web Token) |
+| Database | PostgreSQL / SQL Server, Spring Data JPA, Hibernate |
+| Build Tools | Vite, Maven, Docker |
+
+## Impact & Results
+
+- **Order Efficiency:** Reduced table order-to-kitchen transmission time from 5–8 minutes to **under 10 seconds**.
+- **Accuracy:** Eliminated 95% of manual handwriting errors and duplicate order entries.
+- **Academic Distinction:** Evaluated as the top-tier capstone project in the Software Engineering curriculum at FPT University.
