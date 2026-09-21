@@ -2,7 +2,7 @@
 
 A modern, responsive portfolio website showcasing my work as a Full Stack Developer. Built with Next.js 15, TypeScript, Tailwind CSS, and Shadcn UI. Features a blog system, project showcase, work experience timeline, and contact form with Telegram integration.
 
-![Portfolio Preview](/public/meta/hero.png)
+![Portfolio Preview]()
 
 > **Credits:** This portfolio is built on top of the amazing [Sleek Portfolio](https://github.com/ramxcodes/sleek-portfolio) template created by [@ramxcodes](https://github.com/ramxcodes). The original template is licensed under the MIT License and has been customized for my personal use.
 
@@ -170,10 +170,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Contact
 
-- **Email:** abhimanpanwar6@gmail.com
-- **LinkedIn:** [abhiman-panwar-272aa7228](https://www.linkedin.com/in/abhiman-panwar-272aa7228/)
-- **GitHub:** [Kroszborg](https://github.com/Kroszborg)
-- **Twitter:** [@kroszborgg](https://x.com/kroszborgg)
+- **Email:** nguyenquanghuy200612@gmail.com
+- **LinkedIn:** [Nguyen Huy](https://www.linkedin.com/in/huy-nguy%E1%BB%85n-quang-278ab0367/)
+- **GitHub:** [NhoCutee](https://github.com/NhoCutee)
 
 ---
 
