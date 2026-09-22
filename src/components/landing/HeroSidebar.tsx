@@ -9,6 +9,7 @@ import { MatrixText } from '../ui/matrix-text';
 import { TextScramble } from '../ui/text-scramble';
 import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
 import HeroCTAButtons from './HeroCTAButtons';
+import SpotifyNowPlaying from './SpotifyNowPlaying';
 
 export default function HeroSidebar() {
   const { name, title, avatar, skills, description, buttons } = heroConfig;
@@ -102,6 +103,9 @@ export default function HeroSidebar() {
           </Tooltip>
         ))}
       </div>
+
+      {/* Spotify currently playing */}
+      <SpotifyNowPlaying className="mt-2" />
     </div>
   );
 }

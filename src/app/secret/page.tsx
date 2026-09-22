@@ -1,4 +1,5 @@
 import Container from '@/components/common/Container';
+import SpotifyNowPlaying from '@/components/landing/SpotifyNowPlaying';
 import { Separator } from '@/components/ui/separator';
 import { generateMetadata as getMetadata } from '@/config/Meta';
 import { Metadata } from 'next';
@@ -32,18 +33,21 @@ const SECTIONS = [
     id: 'music',
     title: 'Currently Listening',
     content: (
-      <p className="text-muted-foreground">
-        Check out my{' '}
-        <Link
-          href="https://open.spotify.com/user/31i5vjnb2ifin5i3keuvvb6qimve?si=6a3d3436d1554720"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-primary hover:underline"
-        >
-          Spotify profile
-        </Link>{' '}
-        to see what I&apos;m listening to!
-      </p>
+      <div className="space-y-4">
+        <SpotifyNowPlaying />
+        <p className="text-muted-foreground">
+          Check out my{' '}
+          <Link
+            href="https://open.spotify.com/user/31i5vjnb2ifin5i3keuvvb6qimve?si=6a3d3436d1554720"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-primary hover:underline"
+          >
+            Spotify profile
+          </Link>{' '}
+          to see what I&apos;m listening to!
+        </p>
+      </div>
     ),
   },
   {
