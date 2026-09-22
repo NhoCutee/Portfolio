@@ -131,7 +131,7 @@ export function CommandPalette() {
   };
 
   const handleInstagram = () => {
-    window.open('https://instagram.com/', '_blank');
+    window.open('https://instagram.com/meobone', '_blank');
     setOpen(false);
   };
 

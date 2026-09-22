@@ -9,11 +9,7 @@ import Sun from '../svgs/Sun';
 import { Button } from '../ui/button';
 
 export type AnimationVariant =
-  | 'circle'
-  | 'rectangle'
-  | 'gif'
-  | 'polygon'
-  | 'circle-blur';
+  'circle' | 'rectangle' | 'gif' | 'polygon' | 'circle-blur';
 export type AnimationStart =
   | 'top-left'
   | 'top-right'
@@ -38,7 +34,7 @@ export const useThemeToggle = ({
   blur?: boolean;
   gifUrl?: string;
 } = {}) => {
-  const { theme, setTheme, resolvedTheme } = useTheme();
+  const { setTheme, resolvedTheme } = useTheme();
 
   const [isDark, setIsDark] = useState(false);
 
@@ -48,13 +44,10 @@ export const useThemeToggle = ({
 
   const styleId = 'theme-transition-styles';
 
-  const updateStyles = useCallback((css: string, name: string) => {
+  const updateStyles = useCallback((css: string) => {
     if (typeof window === 'undefined') return;
 
     let styleElement = document.getElementById(styleId) as HTMLStyleElement;
-
-    console.log('style ELement', styleElement);
-    console.log('name', name);
 
     if (!styleElement) {
       styleElement = document.createElement('style');
@@ -63,82 +56,121 @@ export const useThemeToggle = ({
     }
 
     styleElement.textContent = css;
-
-    console.log('content updated');
   }, []);
 
-  const toggleTheme = useCallback(() => {
-    setIsDark(!isDark);
+  const toggleTheme = useCallback(
+    (e?: React.MouseEvent<HTMLElement>) => {
+      if (typeof window === 'undefined') return;
 
-    const animation = createAnimation(variant, start, blur, gifUrl);
+      const nextTheme = resolvedTheme === 'dark' ? 'light' : 'dark';
 
-    updateStyles(animation.css, animation.name);
+      if (!document.startViewTransition) {
+        setTheme(nextTheme);
+        return;
+      }
 
-    if (typeof window === 'undefined') return;
+      if (variant === 'circle') {
+        let x = window.innerWidth / 2;
+        let y = window.innerHeight / 2;
 
-    const switchTheme = () => {
-      setTheme(theme === 'light' ? 'dark' : 'light');
-    };
+        if (e && e.clientX && e.clientY) {
+          x = e.clientX;
+          y = e.clientY;
+        } else {
+          const btn = document.querySelector(
+            'button[aria-label="Toggle theme"]',
+          );
+          if (btn) {
+            const rect = btn.getBoundingClientRect();
+            x = rect.left + rect.width / 2;
+            y = rect.top + rect.height / 2;
+          }
+        }
 
-    if (!document.startViewTransition) {
-      switchTheme();
-      return;
-    }
+        const endRadius = Math.hypot(
+          Math.max(x, window.innerWidth - x),
+          Math.max(y, window.innerHeight - y),
+        );
 
-    document.startViewTransition(switchTheme);
-  }, [
-    theme,
-    setTheme,
-    variant,
-    start,
-    blur,
-    gifUrl,
-    updateStyles,
-    isDark,
-    setIsDark,
-  ]);
+        updateStyles(
+          `
+          ::view-transition-old(root),
+          ::view-transition-new(root) {
+            animation: none;
+            mix-blend-mode: normal;
+          }
+          ::view-transition-old(root) {
+            z-index: 1;
+          }
+          ::view-transition-new(root) {
+            z-index: 9999;
+          }
+        `,
+        );
+
+        const transition = document.startViewTransition(() => {
+          setTheme(nextTheme);
+        });
+
+        transition.ready.then(() => {
+          document.documentElement.animate(
+            {
+              clipPath: [
+                `circle(0px at ${x}px ${y}px)`,
+                `circle(${endRadius}px at ${x}px ${y}px)`,
+              ],
+            },
+            {
+              duration: 500,
+              easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
+              pseudoElement: '::view-transition-new(root)',
+            },
+          );
+        });
+        return;
+      }
+
+      const animation = createAnimation(variant, start, blur, gifUrl);
+      updateStyles(animation.css);
+
+      document.startViewTransition(() => {
+        setTheme(nextTheme);
+      });
+    },
+    [resolvedTheme, setTheme, variant, start, blur, gifUrl, updateStyles],
+  );
 
   const setCrazyLightTheme = useCallback(() => {
-    setIsDark(false);
-
-    const animation = createAnimation(variant, start, blur, gifUrl);
-
-    updateStyles(animation.css, animation.name);
-
     if (typeof window === 'undefined') return;
 
-    const switchTheme = () => {
-      setTheme('light');
-    };
-
     if (!document.startViewTransition) {
-      switchTheme();
+      setTheme('light');
       return;
     }
 
-    document.startViewTransition(switchTheme);
-  }, [setTheme, variant, start, blur, gifUrl, updateStyles, setIsDark]);
+    const animation = createAnimation(variant, start, blur, gifUrl);
+    updateStyles(animation.css);
+
+    document.startViewTransition(() => {
+      setTheme('light');
+    });
+  }, [setTheme, variant, start, blur, gifUrl, updateStyles]);
 
   const setCrazyDarkTheme = useCallback(() => {
-    setIsDark(true);
-
-    const animation = createAnimation(variant, start, blur, gifUrl);
-
-    updateStyles(animation.css, animation.name);
-
     if (typeof window === 'undefined') return;
 
-    const switchTheme = () => {
-      setTheme('dark');
-    };
-
     if (!document.startViewTransition) {
-      switchTheme();
+      setTheme('dark');
       return;
     }
 
-    document.startViewTransition(switchTheme);
-  }, [setTheme, variant, start, blur, gifUrl, updateStyles, setIsDark]);
+    const animation = createAnimation(variant, start, blur, gifUrl);
+    updateStyles(animation.css);
+
+    document.startViewTransition(() => {
+      setTheme('dark');
+    });
+  }, [setTheme, variant, start, blur, gifUrl, updateStyles]);
 
   return {
     isDark,

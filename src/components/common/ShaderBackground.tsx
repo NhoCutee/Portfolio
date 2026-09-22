@@ -1,8 +1,9 @@
 'use client';
 
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
+import { useTheme } from 'next-themes';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { ShaderMaterial } from 'three';
+import { ShaderMaterial, Vector2 } from 'three';
 
 const vertexShader = `
   varying vec2 vUv;
@@ -144,19 +145,16 @@ const FRAME_INTERVAL = 1000 / TARGET_FPS;
 
 function AnimatedShader({ isDark }: { isDark: boolean }) {
   const materialRef = useRef<ShaderMaterial>(null);
-  const resolutionRef = useRef({
-    x: typeof window !== 'undefined' ? window.innerWidth : 1920,
-    y: typeof window !== 'undefined' ? window.innerHeight : 1080,
-  });
-  const { invalidate } = useThree();
+  const { viewport, size, invalidate } = useThree();
   const isDarkRef = useRef(isDark);
 
   const uniforms = useMemo(
     () => ({
       uTime: { value: 0 },
-      uResolution: { value: { ...resolutionRef.current } },
+      uResolution: { value: new Vector2(size.width, size.height) },
       uIsDark: { value: isDarkRef.current ? 1.0 : 0.0 },
     }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );
 
@@ -166,12 +164,13 @@ function AnimatedShader({ isDark }: { isDark: boolean }) {
   }, [invalidate]);
 
   useEffect(() => {
-    const onResize = () => {
-      resolutionRef.current = { x: window.innerWidth, y: window.innerHeight };
-    };
-    window.addEventListener('resize', onResize, { passive: true });
-    return () => window.removeEventListener('resize', onResize);
-  }, []);
+    if (materialRef.current) {
+      materialRef.current.uniforms.uResolution.value.set(
+        size.width,
+        size.height,
+      );
+    }
+  }, [size.width, size.height]);
 
   // Update isDark ref when theme changes
   useEffect(() => {
@@ -181,13 +180,12 @@ function AnimatedShader({ isDark }: { isDark: boolean }) {
   useFrame((state) => {
     if (!materialRef.current) return;
     materialRef.current.uniforms.uTime.value = state.clock.elapsedTime;
-    materialRef.current.uniforms.uResolution.value = resolutionRef.current;
     materialRef.current.uniforms.uIsDark.value = isDarkRef.current ? 1.0 : 0.0;
   });
 
   return (
-    <mesh>
-      <planeGeometry args={[2, 2]} />
+    <mesh scale={[viewport.width, viewport.height, 1]}>
+      <planeGeometry args={[1, 1]} />
       <shaderMaterial
         ref={materialRef}
         vertexShader={vertexShader}
@@ -202,6 +200,7 @@ function AnimatedShader({ isDark }: { isDark: boolean }) {
 
 export function ShaderBackground() {
   const [isMounted, setIsMounted] = useState(false);
+  const { resolvedTheme } = useTheme();
 
   useEffect(() => {
     setIsMounted(true);
@@ -213,11 +212,11 @@ export function ShaderBackground() {
       <Canvas
         camera={{ position: [0, 0, 1], near: 0.1, far: 10 }}
         style={{ background: 'transparent' }}
-        gl={{ alpha: false, antialias: false, powerPreference: 'default' }}
+        gl={{ alpha: true, antialias: false, powerPreference: 'default' }}
         dpr={1}
         frameloop="demand"
       >
-        <AnimatedShader isDark={true} />
+        <AnimatedShader isDark={resolvedTheme === 'dark'} />
       </Canvas>
     </div>
   );

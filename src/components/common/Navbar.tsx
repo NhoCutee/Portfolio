@@ -7,6 +7,7 @@ import Image from 'next/image';
 import React from 'react';
 
 import { SearchTrigger } from './SearchTrigger';
+import { ThemeToggleButton } from './ThemeSwitch';
 
 export default function Navbar() {
   const { scrollY } = useScroll();
@@ -87,11 +88,13 @@ export default function Navbar() {
               ))}
           </div>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 md:gap-2">
           {/* Search trigger - desktop only */}
           <div className="hidden md:flex">
             <SearchTrigger />
           </div>
+          {/* Theme toggle */}
+          <ThemeToggleButton />
         </div>
       </div>
     </motion.nav>

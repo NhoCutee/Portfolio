@@ -9,6 +9,7 @@ import Navbar from '@/components/common/Navbar';
 import OnekoCat from '@/components/common/OnekoCat';
 import { Quote } from '@/components/common/Quote';
 import { ShaderBackground } from '@/components/common/ShaderBackground';
+import { ThemeProvider } from '@/components/common/ThemeProviders';
 import { generateMetadata as getMetadata } from '@/config/Meta';
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
@@ -25,23 +26,30 @@ export default function RootLayout({
 }>) {
   return (
     <ViewTransitions>
-      <html lang="en" className="dark">
+      <html lang="en" suppressHydrationWarning>
         <body className="font-hanken-grotesk antialiased">
-          <ShaderBackground />
-          <LenisRoot>
-            <Navbar />
-            {children}
-            <OnekoCat />
-            <Quote />
-            <Footer />
-            <ChatBubble />
-            <CommandPalette />
-            <KonamiCode />
-            <ConsoleMessage />
-            <UmamiAnalytics />
-            <SpeedInsights />
-            <Analytics />
-          </LenisRoot>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem
+            disableTransitionOnChange={false}
+          >
+            <ShaderBackground />
+            <LenisRoot>
+              <Navbar />
+              {children}
+              <OnekoCat />
+              <Quote />
+              <Footer />
+              <ChatBubble />
+              <CommandPalette />
+              <KonamiCode />
+              <ConsoleMessage />
+              <UmamiAnalytics />
+              <SpeedInsights />
+              <Analytics />
+            </LenisRoot>
+          </ThemeProvider>
         </body>
       </html>
     </ViewTransitions>

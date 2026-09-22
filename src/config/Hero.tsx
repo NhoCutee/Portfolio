@@ -121,7 +121,7 @@ export const socialLinks = [
   },
   {
     name: 'Instagram',
-    href: 'https://instagram.com/',
+    href: 'https://instagram.com/meobone',
     icon: <Instagram />,
   },
   {

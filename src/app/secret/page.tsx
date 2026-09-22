@@ -35,7 +35,7 @@ const SECTIONS = [
       <p className="text-muted-foreground">
         Check out my{' '}
         <Link
-          href="https://open.spotify.com/user/kroszborg"
+          href="https://open.spotify.com/user/31i5vjnb2ifin5i3keuvvb6qimve?si=6a3d3436d1554720"
           target="_blank"
           rel="noopener noreferrer"
           className="text-primary hover:underline"
