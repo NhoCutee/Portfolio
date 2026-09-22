@@ -1,4 +1,5 @@
 import Github from '@/components/svgs/Github';
+import Instagram from '@/components/svgs/Instagram';
 import LinkedIn from '@/components/svgs/LinkedIn';
 import Mail from '@/components/svgs/Mail';
 import AWS from '@/components/technologies/AWS';
@@ -117,6 +118,11 @@ export const socialLinks = [
     name: 'LinkedIn',
     href: 'https://www.linkedin.com/in/huy-nguy%E1%BB%85n-quang-278ab0367/',
     icon: <LinkedIn />,
+  },
+  {
+    name: 'Instagram',
+    href: 'https://instagram.com/',
+    icon: <Instagram />,
   },
   {
     name: 'Email',
