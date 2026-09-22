@@ -86,6 +86,12 @@ export default function Hero() {
                 <TooltipTrigger asChild>
                   <Link
                     href={link.href}
+                    target={link.href.startsWith('http') ? '_blank' : undefined}
+                    rel={
+                      link.href.startsWith('http')
+                        ? 'noopener noreferrer'
+                        : undefined
+                    }
                     className="text-muted-foreground hover:text-foreground flex items-center gap-2 transition-colors"
                   >
                     <span className="size-5">{link.icon}</span>

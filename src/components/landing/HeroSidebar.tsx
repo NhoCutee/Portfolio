@@ -85,6 +85,12 @@ export default function HeroSidebar() {
             <TooltipTrigger asChild>
               <Link
                 href={link.href}
+                target={link.href.startsWith('http') ? '_blank' : undefined}
+                rel={
+                  link.href.startsWith('http')
+                    ? 'noopener noreferrer'
+                    : undefined
+                }
                 className="text-muted-foreground hover:text-foreground transition-colors"
               >
                 <span className="block size-[30px]">{link.icon}</span>
