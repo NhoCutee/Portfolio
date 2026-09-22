@@ -115,7 +115,7 @@ export const socialLinks = [
   },
   {
     name: 'LinkedIn',
-    href: 'https://linkedin.com',
+    href: 'https://www.linkedin.com/in/huy-nguy%E1%BB%85n-quang-278ab0367/',
     icon: <LinkedIn />,
   },
   {

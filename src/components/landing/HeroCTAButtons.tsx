@@ -50,7 +50,7 @@ export default function HeroCTAButtons({ buttons }: HeroCTAButtonsProps) {
   });
 
   return (
-    <div className="mt-8 flex flex-wrap items-center gap-4">
+    <div className="mt-2 flex flex-wrap items-center gap-2.5">
       {buttons.map((button, index) => {
         const IconComponent =
           buttonIcons[button.icon as keyof typeof buttonIcons];

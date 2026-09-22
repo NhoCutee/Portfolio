@@ -38,7 +38,7 @@ export default function HeroSidebar() {
   };
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-4">
       {/* Avatar + status */}
       <div className="flex items-center gap-4">
         <div id="hero-avatar-glitch">

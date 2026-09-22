@@ -20,7 +20,7 @@ export default function page() {
           <div className="flex flex-col gap-12 lg:flex-row">
             {/* Left: Hero sidebar - shown at top on mobile, left side on desktop */}
             <aside className="w-full lg:w-64 lg:shrink-0">
-              <div className="lg:sticky lg:top-32">
+              <div className="lg:sticky lg:top-24">
                 <HeroSidebar />
               </div>
             </aside>
