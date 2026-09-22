@@ -30,12 +30,13 @@ export async function GET() {
       }
 
       return NextResponse.json({
-        isPlaying: false,
-        title: 'Not Playing',
-        artist: '',
-        album: '',
-        albumImageUrl: '',
-        songUrl: '',
+        isPlaying: true,
+        title: 'My Love Mine All Mine',
+        artist: 'Mitski',
+        album: 'The Land Is Inhospitable and So Are We',
+        albumImageUrl:
+          'https://i.scdn.co/image/ab67616d0000b27334f21d3047d85440dfa37f10',
+        songUrl: 'https://open.spotify.com/track/3vkCueOmm7xQDoJ17W1Pm3',
       });
     }
 
@@ -43,12 +44,13 @@ export async function GET() {
 
     if (!song.item) {
       return NextResponse.json({
-        isPlaying: false,
-        title: 'Not Playing',
-        artist: '',
-        album: '',
-        albumImageUrl: '',
-        songUrl: '',
+        isPlaying: true,
+        title: 'My Love Mine All Mine',
+        artist: 'Mitski',
+        album: 'The Land Is Inhospitable and So Are We',
+        albumImageUrl:
+          'https://i.scdn.co/image/ab67616d0000b27334f21d3047d85440dfa37f10',
+        songUrl: 'https://open.spotify.com/track/3vkCueOmm7xQDoJ17W1Pm3',
       });
     }
 
