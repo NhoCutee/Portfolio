@@ -16,9 +16,9 @@ import {
   FolderKanban,
   Github,
   Home,
+  Instagram,
   Linkedin,
   Share2,
-  Twitter,
   Wrench,
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -130,13 +130,16 @@ export function CommandPalette() {
     setOpen(false);
   };
 
-  const handleTwitter = () => {
-    window.open('https://github.com/NhoCutee', '_blank');
+  const handleInstagram = () => {
+    window.open('https://instagram.com/', '_blank');
     setOpen(false);
   };
 
   const handleLinkedIn = () => {
-    window.open('https://linkedin.com', '_blank');
+    window.open(
+      'https://www.linkedin.com/in/huy-nguy%E1%BB%85n-quang-278ab0367/',
+      '_blank',
+    );
     setOpen(false);
   };
 
@@ -217,11 +220,11 @@ export function CommandPalette() {
       group: 'actions',
     },
     {
-      id: 'twitter',
-      label: 'Twitter',
-      description: 'View Twitter profile',
-      icon: <Twitter />,
-      action: handleTwitter,
+      id: 'instagram',
+      label: 'Instagram',
+      description: 'View Instagram profile',
+      icon: <Instagram />,
+      action: handleInstagram,
       group: 'actions',
     },
     {
