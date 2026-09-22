@@ -1,7 +1,6 @@
 'use client';
 
 import { Pause, Play } from 'lucide-react';
-import Image from 'next/image';
 import Link from 'next/link';
 import React, { useRef, useState } from 'react';
 
@@ -62,11 +61,13 @@ export default function SpotifyNowPlaying({
       <div className="border-border/60 bg-muted/40 hover:border-border relative flex items-center gap-3 overflow-hidden rounded-2xl border p-2.5 backdrop-blur-sm transition-all duration-200">
         {/* Album art with play/pause overlay */}
         <div className="relative size-12 shrink-0 overflow-hidden rounded-xl shadow-sm">
-          <Image
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
             src="https://i.scdn.co/image/ab67616d0000b27334f21d3047d85440dfa37f10"
             alt="My Love Mine All Mine"
             width={48}
             height={48}
+            loading="lazy"
             className={`size-full object-cover transition-transform duration-500 ${isPlaying ? 'scale-105' : ''}`}
           />
           <button
