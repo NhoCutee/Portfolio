@@ -105,7 +105,7 @@ export default function HeroSidebar() {
       </div>
 
       {/* Spotify currently playing */}
-      <SpotifyNowPlaying className="mt-2" />
+      <SpotifyNowPlaying compact className="mt-2" />
     </div>
   );
 }
