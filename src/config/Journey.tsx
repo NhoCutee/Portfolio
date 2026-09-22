@@ -1,5 +1,6 @@
 import Calender from '@/components/svgs/Calender';
 import Gear from '@/components/svgs/Gear';
+import { Award } from 'lucide-react';
 import React from 'react';
 
 export type JourneyItem = {
@@ -22,13 +23,12 @@ export const journeyItems: JourneyItem[] = [
     icon: Gear,
     href: '/gears',
   },
-  // Temporarily hidden - uncomment to re-enable certificates page
-  // {
-  //   name: 'Certificates & Achievements',
-  //   description: 'A curated list of certificates and achievements.',
-  //   icon: CertificateIcon,
-  //   href: '/journey/certificates',
-  // },
+  {
+    name: 'Certificates & Achievements',
+    description: 'A curated list of certificates and achievements.',
+    icon: Award,
+    href: '/journey/certificates',
+  },
 ];
 
 const journeyConfig = {

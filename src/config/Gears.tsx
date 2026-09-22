@@ -52,7 +52,7 @@ export const devices = [
     link: 'https://amzn.to/3ZzYSYI',
   },
   {
-    name: 'Iphone 16 pro (256 GB)',
+    name: 'Iphone 11 pro max (256 GB)',
     icon: <Phone className="size-4" />,
   },
 ];
@@ -82,6 +82,7 @@ export const software = [
   // { name: 'Ghostty Terminal', href: 'https://ghostty.org/' },
   { name: 'VS Code', href: 'https://code.visualstudio.com/' },
   { name: 'Claude Code', href: 'https://claude.ai/code' },
+  { name: 'Gemini', href: 'https://gemini.google.com/code' },
   { name: 'Cursor', href: 'https://cursor.com/' },
   { name: 'Zen browser', href: 'https://zen-browser.app/' },
 ];

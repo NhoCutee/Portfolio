@@ -1,16 +1,18 @@
-export const certificates = [
-  {
-    file: '/certificates/ml-specialization.png',
-    title: 'Machine Learning Specialization',
-    issuer: 'DeepLearning.AI & Stanford Online',
-    date: '2024-11-01',
-  },
-  {
-    file: '/certificates/google-cybersecurity.png',
-    title: 'Google Cybersecurity Professional Certificate',
-    issuer: 'Google',
-    date: '2024-11-01',
-  },
+export interface CertificateItem {
+  file: string;
+  title?: string;
+  issuer?: string;
+  date?: string;
+}
+
+export const certificates: CertificateItem[] = [
+  // Thêm chứng chỉ của bạn vào đây (hoặc chỉ cần thả ảnh vào thư mục public/certificates/):
+  // {
+  //   file: '/certificates/my-certificate.png',
+  //   title: 'My Certificate',
+  //   issuer: 'Issuer Name',
+  //   date: '2025-01-01',
+  // },
 ];
 
 const achievementsConfig = {
