@@ -56,10 +56,12 @@ export default function HeroSidebar() {
       {/* Big heading */}
       <div className="flex flex-col gap-1">
         <h1
-          className="text-foreground text-[2.5rem] leading-[1.05] font-bold tracking-[-0.03em] whitespace-nowrap sm:text-[2.8rem]"
+          className="text-foreground text-[2.8rem] leading-[1.05] font-bold tracking-[-0.03em]"
           style={{ fontFamily: 'ClashDisplay, Hanken Grotesk, sans-serif' }}
         >
-          <MatrixText text={name} />
+          <MatrixText
+            text={name.includes('\n') ? name : name.split(' ').join('\n')}
+          />
         </h1>
         <p className="text-muted-foreground text-lg font-medium tracking-tight">
           <TextScramble text={title} />

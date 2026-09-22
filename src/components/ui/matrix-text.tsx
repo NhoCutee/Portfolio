@@ -56,8 +56,8 @@ export function MatrixText({ text, className = '', style }: MatrixTextProps) {
         originalText
           .split('')
           .map((char, index) => {
-            // Keep spaces so word boundaries and layout stay 100% stable
-            if (char === ' ') return ' ';
+            // Keep spaces and newlines so word boundaries and layout stay 100% stable
+            if (char === ' ' || char === '\n') return char;
             if (index < iter) return originalText[index];
             if (char >= 'a' && char <= 'z') {
               return LOWER_CHARS[
@@ -90,14 +90,15 @@ export function MatrixText({ text, className = '', style }: MatrixTextProps) {
 
   return (
     <span
-      className={cn(
-        'inline-block cursor-default whitespace-nowrap select-none',
-        className,
-      )}
+      className={cn('inline-block cursor-default select-none', className)}
       onMouseEnter={startMatrixEffect}
       style={style}
     >
-      {displayText}
+      {displayText.split('\n').map((line, index) => (
+        <span key={index} className="block">
+          {line}
+        </span>
+      ))}
     </span>
   );
 }
