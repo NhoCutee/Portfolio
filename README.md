@@ -1,4 +1,4 @@
-# Abhiman Panwar's Portfolio
+# Nguyen Huy's Portfolio
 
 A modern, responsive portfolio website showcasing my work as a Full Stack Developer. Built with Next.js 15, TypeScript, Tailwind CSS, and Shadcn UI. Features a blog system, project showcase, work experience timeline, and contact form with Telegram integration.
 
@@ -10,12 +10,12 @@ A modern, responsive portfolio website showcasing my work as a Full Stack Develo
 
 I'm a Full Stack Developer and Open Source Contributor with a passion for building innovative web applications. I specialize in React.js, Next.js, and TypeScript, with expertise in creating 3D web experiences using Three.js and React Three Fiber.
 
-**Current Status:** B.Tech in Information Technology at Manipal University Jaipur (2023-2027)
+**Current Status:** Software Engineer at FPT University (2024-2027)
 
 **Tech Stack:**
 
 - **Frontend:** React.js, Next.js, TypeScript, Tailwind CSS, GSAP, Three.js, React Three Fiber
-- **Backend:** Node.js, Express.js, Django, GraphQL, Prisma ORM
+- **Backend:** Node.js, Express.js, Django, GraphQL, Prisma ORM, Java, Spring Boot
 - **Database:** MongoDB, MySQL, PostgreSQL, Supabase, Firebase
 - **Tools:** Git, Docker, Vercel, CI/CD (GitHub Actions)
 
@@ -176,4 +176,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-**Built with** by Abhiman Panwar using the Sleek Portfolio template as a base and customized for my personal use.
+**Built with** by Nguyen Huy using the Sleek Portfolio template as a base and customized for my personal use.
