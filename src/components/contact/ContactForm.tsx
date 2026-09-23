@@ -18,6 +18,8 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { validateEmail } from '@/lib/email-validator';
+import { validatePhoneNumber } from '@/lib/phone-validator';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2 } from 'lucide-react';
 import { useState } from 'react';
@@ -31,17 +33,27 @@ const contactFormSchema = z.object({
   name: z.string().min(2, {
     message: 'Name must be at least 2 characters.',
   }),
-  email: z.string().email({
-    message: 'Please enter a valid email address.',
-  }),
+  email: z
+    .string()
+    .min(1, { message: 'Email address is required.' })
+    .refine(
+      (val) => validateEmail(val).isValid,
+      (val) => ({
+        message:
+          validateEmail(val).message || 'Please enter a valid email address.',
+      }),
+    ),
   phone: z
     .string()
-    .min(10, {
-      message: 'Phone number must be at least 10 characters.',
-    })
-    .regex(/^[\+]?[1-9][\d]{0,15}$/, {
-      message: 'Please enter a valid phone number.',
-    }),
+    .optional()
+    .refine(
+      (val) => validatePhoneNumber(val).isValid,
+      (val) => ({
+        message:
+          validatePhoneNumber(val).message ||
+          'Please enter a valid phone number.',
+      }),
+    ),
   message: z
     .string()
     .min(10, {
@@ -128,9 +140,14 @@ export default function ContactForm() {
                 name="phone"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Phone *</FormLabel>
+                    <FormLabel>
+                      Phone{' '}
+                      <span className="text-muted-foreground text-xs font-normal">
+                        (Optional)
+                      </span>
+                    </FormLabel>
                     <FormControl>
-                      <Input placeholder="+1 (123) xxx-xxxx" {...field} />
+                      <Input placeholder="+84 12 345 678" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

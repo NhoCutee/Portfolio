@@ -12,7 +12,7 @@ export const contactConfig = {
     placeholders: {
       name: 'Your name',
       email: 'your.email@example.com',
-      phone: '+84 (55) 123-4567',
+      phone: '+84 912 345 678',
       message: 'Tell me about your project...',
     },
     submitButton: 'Send Message',

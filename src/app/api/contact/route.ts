@@ -1,3 +1,5 @@
+import { validateEmail } from '@/lib/email-validator';
+import { validatePhoneNumber } from '@/lib/phone-validator';
 import { NextRequest, NextResponse } from 'next/server';
 import * as z from 'zod';
 
@@ -8,8 +10,29 @@ const RATE_LIMIT_MAX_REQUESTS = 5;
 
 const contactSchema = z.object({
   name: z.string().min(2).max(100),
-  email: z.string().email(),
-  phone: z.string().min(10).max(20),
+  email: z
+    .string()
+    .min(1)
+    .max(254)
+    .refine(
+      (val) => validateEmail(val).isValid,
+      (val) => ({
+        message:
+          validateEmail(val).message || 'Please enter a valid email address',
+      }),
+    ),
+  phone: z
+    .string()
+    .max(30)
+    .optional()
+    .refine(
+      (val) => validatePhoneNumber(val).isValid,
+      (val) => ({
+        message:
+          validatePhoneNumber(val).message ||
+          'Please enter a valid phone number',
+      }),
+    ),
   message: z.string().min(10).max(1000),
 });
 
@@ -65,7 +88,7 @@ function checkRateLimit(clientIP: string): {
 async function sendToTelegram(data: {
   name: string;
   email: string;
-  phone: string;
+  phone?: string;
   message: string;
 }): Promise<boolean> {
   const telegramToken = process.env.TELEGRAM_BOT_TOKEN;
@@ -86,7 +109,7 @@ async function sendToTelegram(data: {
 
 👤 *Name:* ${data.name.trim()}
 📧 *Email:* ${data.email.trim()}
-📱 *Phone:* ${data.phone.trim()}
+📱 *Phone:* ${data.phone && data.phone.trim() ? data.phone.trim() : 'N/A'}
 
 💬 *Message:*
 ${data.message.trim()}
