@@ -22,6 +22,57 @@ import TailwindCss from '@/components/technologies/TailwindCss';
 import TypeScript from '@/components/technologies/TypeScript';
 import Vercel from '@/components/technologies/Vercel';
 
+export interface SkillItem {
+  name: string;
+  icon: React.ReactNode;
+}
+
+export interface SkillCategory {
+  category: string;
+  skills: SkillItem[];
+}
+
+export const skillCategories: SkillCategory[] = [
+  {
+    category: 'Backend & Distributed Systems',
+    skills: [
+      { name: 'Java', icon: <Java key="java" /> },
+      { name: 'Spring Boot', icon: <SpringBoot key="springboot" /> },
+      { name: 'PostgreSQL', icon: <PostgreSQL key="postgresql" /> },
+      { name: 'Redis', icon: <Redis key="redis" /> },
+      { name: 'RabbitMQ', icon: <RabbitMQ key="rabbitmq" /> },
+      { name: 'gRPC', icon: <Grpc key="grpc" /> },
+      { name: 'Node.js', icon: <NodeJs key="nodejs" /> },
+      { name: 'Socket.io', icon: <SocketIo key="socketio" /> },
+      { name: 'Prisma', icon: <Prisma key="prisma" /> },
+      { name: 'Supabase', icon: <Supabase key="supabase" /> },
+      { name: 'MongoDB', icon: <MongoDB key="mongodb" /> },
+      { name: 'Express.js', icon: <ExpressJs key="expressjs" /> },
+    ],
+  },
+  {
+    category: 'Frontend & UI Craft',
+    skills: [
+      { name: 'Next.js', icon: <NextJs key="nextjs" /> },
+      { name: 'React', icon: <ReactIcon key="react" /> },
+      { name: 'TypeScript', icon: <TypeScript key="typescript" /> },
+      { name: 'JavaScript', icon: <JavaScript key="javascript" /> },
+      { name: 'Tailwind CSS', icon: <TailwindCss key="tailwindcss" /> },
+      { name: 'shadcn/ui', icon: <Shadcn key="shadcn" /> },
+    ],
+  },
+  {
+    category: 'DevOps & Tooling',
+    skills: [
+      { name: 'Docker', icon: <Docker key="docker" /> },
+      { name: 'Bun', icon: <Bun key="bun" /> },
+      { name: 'GitHub', icon: <GithubIcon key="github" /> },
+      { name: 'Vercel', icon: <Vercel key="vercel" /> },
+      { name: 'Figma', icon: <Figma key="figma" /> },
+    ],
+  },
+];
+
 export const mySkills = [
   <Java key="java" />,
   <SpringBoot key="springboot" />,
@@ -50,5 +101,8 @@ export const mySkills = [
 
 export const about = {
   name: 'Nguyen Quang Huy',
-  description: `I'm a Software Engineer & Full Stack Developer specializing in Java, Spring Boot, React, Next.js, TypeScript, Node.js, and distributed backend systems with Redis, RabbitMQ, Docker, and Cloud architectures. Currently pursuing Software Engineering at FPT University. Passionate about real-time collaboration, CRDTs, high-performance web applications, and scalable microservices.`,
+  role: 'Software Engineer (Backend & Full Stack)',
+  location: 'Hanoi, Vietnam',
+  education: 'Software Engineering, FPT University',
+  description: `I am a Software Engineer focused on architecting resilient backend systems and high-performance full-stack applications. My core expertise centers on Java, Spring Boot, PostgreSQL, Redis, RabbitMQ, and gRPC microservices, paired with modern TypeScript and Next.js interfaces. Passionate about real-time distributed platforms, high-throughput message processing, and robust cloud infrastructure.`,
 };

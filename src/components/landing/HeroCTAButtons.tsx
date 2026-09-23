@@ -4,7 +4,6 @@ import CV from '@/components/svgs/CV';
 import Chat from '@/components/svgs/Chat';
 import Heart from '@/components/svgs/Heart';
 import { Button } from '@/components/ui/button';
-import { InteractiveEyes } from '@/components/ui/interactive-eye';
 import { LiquidMetalButton } from '@/components/ui/liquid-metal';
 import { MagneticButton } from '@/components/ui/magnetic-button';
 import { usePowerGlitch } from '@/hooks/use-power-glitch';
@@ -34,17 +33,17 @@ export default function HeroCTAButtons({ buttons }: HeroCTAButtonsProps) {
   const router = useRouter();
 
   usePowerGlitch('#hero-avatar-glitch', {
-    timing: { duration: 3000, iterations: Infinity },
-    glitchTimeSpan: { start: 0.9, end: 1.0 },
-    shake: { velocity: 8, amplitudeX: 0.05, amplitudeY: 0.05 },
+    timing: { duration: 2500, iterations: 1 },
+    glitchTimeSpan: { start: 0.8, end: 1.0 },
+    shake: { velocity: 6, amplitudeX: 0.04, amplitudeY: 0.04 },
     slice: {
       count: 3,
-      velocity: 8,
+      velocity: 6,
       minHeight: 0.02,
-      maxHeight: 0.08,
+      maxHeight: 0.06,
       hueRotate: false,
     },
-    playMode: 'always',
+    playMode: 'hover',
     createContainers: true,
     hideOverflow: false,
   });
@@ -60,18 +59,30 @@ export default function HeroCTAButtons({ buttons }: HeroCTAButtonsProps) {
             <LiquidMetalButton
               key={index}
               metalConfig={{
-                colorBack: '#888888',
+                colorBack: '#555555',
                 colorTint: '#ffffff',
-                speed: 0.3,
-                distortion: 0.1,
+                speed: 0.25,
+                distortion: 0.08,
               }}
               size="sm"
               onClick={() => router.push(button.href)}
             >
-              <span className="flex items-center gap-2">
+              <span className="inline-flex items-center gap-2 font-semibold">
                 {IconComponent && <IconComponent />}
-                {button.text}
-                <InteractiveEyes size={16} pupilSize={6} gap={4} />
+                <span>{button.text}</span>
+                <svg
+                  className="size-3.5 opacity-70 transition-transform group-hover:translate-x-0.5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M14 5l7 7m0 0l-7 7m7-7H3"
+                  />
+                </svg>
               </span>
             </LiquidMetalButton>
           );
@@ -82,16 +93,21 @@ export default function HeroCTAButtons({ buttons }: HeroCTAButtonsProps) {
             <MagneticButton key={index} asChild className="inline-block">
               <Button
                 variant="outline"
-                className="group border-pink-500/40 hover:border-pink-500/70 hover:bg-pink-500/10"
+                className="group border-border/80 hover:border-foreground/40 hover:bg-muted/50 text-foreground transition-all duration-200"
                 asChild
               >
-                <a href={button.href} target="_blank" rel="noopener noreferrer">
+                <a
+                  href={button.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2"
+                >
                   {IconComponent && (
-                    <span className="inline-flex items-center text-pink-500 transition-transform duration-300 group-hover:scale-125">
+                    <span className="text-muted-foreground group-hover:text-foreground inline-flex items-center transition-transform duration-300 group-hover:scale-110">
                       <IconComponent />
                     </span>
                   )}
-                  {button.text}
+                  <span>{button.text}</span>
                 </a>
               </Button>
             </MagneticButton>
@@ -101,14 +117,22 @@ export default function HeroCTAButtons({ buttons }: HeroCTAButtonsProps) {
         return (
           <MagneticButton key={index} asChild className="inline-block">
             <Button
+              asChild
               variant={button.variant as 'outline' | 'default'}
               className={cn(
-                button.variant === 'outline' && 'inset-shadow-indigo-500',
-                button.variant === 'default' && 'inset-shadow-indigo-500',
+                button.variant === 'outline' &&
+                  'border-border/80 hover:bg-muted/50',
+                button.variant === 'default' &&
+                  'bg-primary text-primary-foreground',
               )}
             >
-              {IconComponent && <IconComponent />}
-              <Link href={button.href}>{button.text}</Link>
+              <Link
+                href={button.href}
+                className="inline-flex items-center gap-2"
+              >
+                {IconComponent && <IconComponent />}
+                <span>{button.text}</span>
+              </Link>
             </Button>
           </MagneticButton>
         );

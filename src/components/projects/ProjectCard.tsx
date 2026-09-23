@@ -20,6 +20,7 @@ import NextLink from 'next/link';
 import React, { useState } from 'react';
 
 import ArrowRight from '../svgs/ArrowRight';
+import Github from '../svgs/Github';
 import PlayCircle from '../svgs/PlayCircle';
 import Website from '../svgs/Website';
 import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
@@ -37,7 +38,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
         <CardHeader className="p-0">
           <div
             className="group relative overflow-hidden"
-            style={{ aspectRatio: '16 / 5.5' }}
+            style={{ aspectRatio: '16 / 8.5' }}
           >
             <Image
               className="h-full w-full object-cover"
@@ -85,36 +86,42 @@ export function ProjectCard({ project }: ProjectCardProps) {
                 </h3>
               </NextLink>
               <div className="flex items-center gap-2">
-                <Tooltip>
-                  <TooltipTrigger>
-                    <Link
-                      className="text-secondary hover:text-primary flex size-6 items-center justify-center transition-colors"
-                      href={project.link}
-                      target="_blank"
-                    >
-                      <Website />
-                    </Link>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>View Website</p>
-                  </TooltipContent>
-                </Tooltip>
-                {/* <Tooltip>
-                <TooltipTrigger>
-                  {project.github && (
-                    <Link
-                      className="text-secondary hover:text-primary flex size-6 items-center justify-center transition-colors"
-                      href={project.github}
-                      target="_blank"
-                    >
-                      <Github />
-                    </Link>
-                  )}
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>View GitHub</p>
-                </TooltipContent>
-              </Tooltip> */}
+                {project.live && (
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Link
+                        className="text-secondary hover:text-primary flex size-6 items-center justify-center transition-colors"
+                        href={project.live}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="Live Demo"
+                      >
+                        <Website />
+                      </Link>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Live Demo</p>
+                    </TooltipContent>
+                  </Tooltip>
+                )}
+                {(project.github || project.link) && (
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Link
+                        className="text-secondary hover:text-primary flex size-6 items-center justify-center transition-colors"
+                        href={project.github || project.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="View Source Code"
+                      >
+                        <Github className="size-4" />
+                      </Link>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>View Source Code</p>
+                    </TooltipContent>
+                  </Tooltip>
+                )}
               </div>
             </div>
 

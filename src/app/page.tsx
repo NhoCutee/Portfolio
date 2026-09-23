@@ -31,8 +31,8 @@ export default function page() {
               <Work />
               <About />
               <Github />
-              <CTA />
               <Journey />
+              <CTA />
             </main>
           </div>
         </div>

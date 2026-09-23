@@ -12,12 +12,15 @@ export default function Experience() {
     <section className="border-border/50 border-b py-12 last:border-0">
       <SectionHeading heading="Experience" />
       <div className="mt-6 flex flex-col gap-4">
-        {experiences.slice(0, 3).map((experience: Experience) => (
-          <ExpandableExperienceCard
-            key={experience.company}
-            experience={experience}
-          />
-        ))}
+        {experiences
+          .slice(0, 3)
+          .map((experience: Experience, index: number) => (
+            <ExpandableExperienceCard
+              key={experience.company}
+              experience={experience}
+              defaultExpanded={index === 0}
+            />
+          ))}
       </div>
       <div className="mt-6">
         <MagneticButton strength={0.4}>

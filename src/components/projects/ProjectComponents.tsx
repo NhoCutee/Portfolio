@@ -371,7 +371,7 @@ export const ProjectComponents = {
     [key: string]: unknown;
   }) => (
     <blockquote
-      className="border-primary text-muted-foreground mb-4 border-l-4 pl-4 italic"
+      className="border-primary/40 text-muted-foreground mb-4 border-l-2 pl-4 italic"
       {...props}
     >
       {children}

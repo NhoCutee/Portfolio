@@ -17,6 +17,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
 
 interface ExpandableExperienceCardProps {
   experience: Experience;
+  defaultExpanded?: boolean;
 }
 
 const parseDescription = (text: string): string => {
@@ -25,8 +26,9 @@ const parseDescription = (text: string): string => {
 
 export function ExpandableExperienceCard({
   experience,
+  defaultExpanded = false,
 }: ExpandableExperienceCardProps) {
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(defaultExpanded);
 
   return (
     <div className="flex flex-col gap-4">

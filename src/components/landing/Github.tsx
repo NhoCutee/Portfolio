@@ -1,6 +1,7 @@
 'use client';
 
 import { githubConfig } from '@/config/Github';
+import { useTheme } from 'next-themes';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
@@ -25,6 +26,8 @@ type GitHubContributionsResponse = {
 };
 
 export default function Github() {
+  const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
   const [contributions, setContributions] = useState<ContributionItem[]>([]);
   const [totalContributions, setTotalContributions] = useState<number>(0);
   const [isLoading, setIsLoading] = useState(true);
@@ -33,6 +36,10 @@ export default function Github() {
   const isDragging = useRef(false);
   const dragStartX = useRef(0);
   const dragScrollLeft = useRef(0);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     async function fetchData() {
@@ -157,7 +164,9 @@ export default function Github() {
             blockSize={11}
             blockMargin={3}
             fontSize={11}
-            colorScheme="dark"
+            colorScheme={
+              mounted && resolvedTheme === 'light' ? 'light' : 'dark'
+            }
             maxLevel={githubConfig.maxLevel}
             hideTotalCount={true}
             hideColorLegend={true}
@@ -168,7 +177,12 @@ export default function Github() {
               weekdays: githubConfig.weekdays,
               totalCount: githubConfig.totalCountLabel,
             }}
-            style={{ color: 'rgb(139, 148, 158)' }}
+            style={{
+              color:
+                mounted && resolvedTheme === 'light'
+                  ? 'rgb(100, 116, 139)'
+                  : 'rgb(139, 148, 158)',
+            }}
           />
         </div>
       )}

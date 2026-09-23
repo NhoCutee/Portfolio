@@ -16,7 +16,7 @@ export default function SectionHeading({
           {subHeading}
         </p>
       )}
-      <h2 className="text-foreground text-xl font-bold tracking-tight">
+      <h2 className="text-foreground font-clash text-xl font-bold tracking-tight">
         {heading}
       </h2>
     </div>

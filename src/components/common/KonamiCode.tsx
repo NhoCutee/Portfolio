@@ -235,7 +235,7 @@ export default function KonamiCode() {
               className="flex flex-col items-center gap-3 rounded-2xl border-2 border-green-500/60 bg-black/90 px-10 py-8 text-center shadow-[0_0_60px_rgba(34,197,94,0.35)] backdrop-blur-md sm:px-14"
               style={{
                 animation:
-                  'konami-pop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards',
+                  'konami-pop 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards',
               }}
             >
               <p className="font-mono text-xs tracking-[0.35em] text-green-400 uppercase">

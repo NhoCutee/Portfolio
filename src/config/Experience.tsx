@@ -170,11 +170,6 @@ export const experiences: Experience[] = [
         icon: <Java />,
       },
       {
-        name: 'Spring Boot',
-        href: 'https://spring.io/projects/spring-boot',
-        icon: <SpringBoot />,
-      },
-      {
         name: 'React',
         href: 'https://react.dev/',
         icon: <ReactIcon />,
