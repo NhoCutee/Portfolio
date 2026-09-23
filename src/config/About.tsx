@@ -103,6 +103,6 @@ export const about = {
   name: 'Nguyen Quang Huy',
   role: 'Software Engineer (Backend & Full Stack)',
   location: 'Hanoi, Vietnam',
-  education: 'Software Engineering, FPT University',
+  education: 'FPT University',
   description: `I am a Software Engineer focused on architecting resilient backend systems and high-performance full-stack applications. My core expertise centers on Java, Spring Boot, PostgreSQL, Redis, RabbitMQ, and gRPC microservices, paired with modern TypeScript and Next.js interfaces. Passionate about real-time distributed platforms, high-throughput message processing, and robust cloud infrastructure.`,
 };

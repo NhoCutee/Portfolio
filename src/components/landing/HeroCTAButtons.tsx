@@ -93,7 +93,7 @@ export default function HeroCTAButtons({ buttons }: HeroCTAButtonsProps) {
             <MagneticButton key={index} asChild className="inline-block">
               <Button
                 variant="outline"
-                className="group border-border/80 hover:border-foreground/40 hover:bg-muted/50 text-foreground transition-all duration-200"
+                className="group border-pink-500/40 hover:border-pink-500/70 hover:bg-pink-500/10"
                 asChild
               >
                 <a
@@ -103,11 +103,11 @@ export default function HeroCTAButtons({ buttons }: HeroCTAButtonsProps) {
                   className="inline-flex items-center gap-2"
                 >
                   {IconComponent && (
-                    <span className="text-muted-foreground group-hover:text-foreground inline-flex items-center transition-transform duration-300 group-hover:scale-110">
+                    <span className="inline-flex items-center text-pink-500 transition-transform duration-300 group-hover:scale-125">
                       <IconComponent />
                     </span>
                   )}
-                  <span>{button.text}</span>
+                  {button.text}
                 </a>
               </Button>
             </MagneticButton>

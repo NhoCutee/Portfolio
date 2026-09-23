@@ -37,7 +37,7 @@ export interface Experience {
 
 export const experiences: Experience[] = [
   {
-    isCurrent: true,
+    isCurrent: false,
     company: 'VNPT Media',
     position: 'Software Engineer Intern',
     location: 'Hanoi, Vietnam',
@@ -94,7 +94,7 @@ export const experiences: Experience[] = [
     website: 'https://vnptmedia.vn',
   },
   {
-    isCurrent: true,
+    isCurrent: false,
     company: 'Open Source & Independent Dev',
     position: 'Full Stack & Software Engineer',
     location: 'Remote',
@@ -146,7 +146,7 @@ export const experiences: Experience[] = [
     website: 'https://github.com/NhoCutee',
   },
   {
-    isCurrent: true,
+    isCurrent: false,
     company: 'FPT University',
     position: 'Software Engineering Project Dev',
     location: 'Hanoi, Vietnam',

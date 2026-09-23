@@ -99,8 +99,8 @@ export const heroConfig = {
     },
     {
       variant: 'outline',
-      text: 'GitHub',
-      href: 'https://github.com/NhoCutee',
+      text: 'Sponsor',
+      href: 'https://buymeacoffee.com/nguyenquanpz',
       icon: 'Heart',
       external: true,
     },

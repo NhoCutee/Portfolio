@@ -8,9 +8,11 @@ interface SkillProps {
 
 export default function Skill({ name, children }: SkillProps) {
   return (
-    <span className="skill-inner-shadow inline-flex items-center self-end rounded-md border border-dashed border-black/20 bg-black/5 px-2 py-1 text-sm font-semibold text-black select-none dark:border-white/30 dark:bg-white/15 dark:text-white">
-      <span className="size-4 flex-shrink-0">{children}</span>
-      <span className="ml-1 text-sm font-bold">{name}</span>
+    <span className="border-border/60 bg-muted/30 text-foreground hover:border-border hover:bg-muted/70 inline-flex cursor-default items-center gap-1.5 rounded-md border px-2.5 py-1 text-xs font-medium transition-all duration-200 select-none hover:scale-105">
+      <span className="flex size-3.5 flex-shrink-0 items-center justify-center">
+        {children}
+      </span>
+      <span>{name}</span>
     </span>
   );
 }
