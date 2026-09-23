@@ -24,8 +24,7 @@ export default function JourneyPage() {
               Journey
             </h1>
             <p className="text-muted-foreground mx-auto max-w-2xl text-lg">
-              No journey content found. Add `src/data/journey/journey.mdx` to
-              display content here.
+              My journey timeline is currently being updated. Check back soon!
             </p>
           </div>
           <Separator />
