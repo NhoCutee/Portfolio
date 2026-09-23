@@ -53,7 +53,7 @@ async function testTelegram() {
     }
   } else {
     console.log('❌ No messages found!');
-    console.log('   👉 Go to Telegram and search for @kroszborgbot');
+    console.log('   👉 Go to Telegram and chat with your bot');
     console.log('   👉 Click START and send a message');
     console.log('   👉 Then run this script again\n');
     return;
