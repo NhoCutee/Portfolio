@@ -10,25 +10,19 @@ export function SearchTrigger() {
     setIsMac(navigator.platform.toUpperCase().indexOf('MAC') >= 0);
   }, []);
 
-  const handleClick = () => {
-    window.dispatchEvent(new CustomEvent('toggle-command-palette'));
-    // Trigger Ctrl+K event
-    const event = new KeyboardEvent('keydown', {
-      key: 'k',
-      code: 'KeyK',
-      ctrlKey: !isMac,
-      metaKey: isMac,
-      bubbles: true,
-      cancelable: true,
-    });
-    document.dispatchEvent(event);
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    window.dispatchEvent(new CustomEvent('open-command-palette'));
   };
 
   return (
     <Button
       variant="outline"
-      className="hover:bg-accent relative flex h-9 items-center justify-start gap-2 rounded-md border px-3 text-sm font-normal shadow-sm transition-colors"
+      type="button"
+      className="hover:bg-accent relative flex h-9 cursor-pointer items-center justify-start gap-2 rounded-md border px-3 text-sm font-normal shadow-sm transition-colors active:scale-95"
       onClick={handleClick}
+      aria-label="Search"
     >
       <span className="text-muted-foreground hidden md:inline-flex">
         Search

@@ -69,13 +69,16 @@ export function CommandPalette() {
     };
 
     const handleToggle = () => setOpen((prev) => !prev);
+    const handleOpen = () => setOpen(true);
     window.addEventListener('toggle-command-palette', handleToggle);
+    window.addEventListener('open-command-palette', handleOpen);
 
     // Capture phase so we see the event before other handlers can stop it.
     document.addEventListener('keydown', down, true);
     return () => {
       document.removeEventListener('keydown', down, true);
       window.removeEventListener('toggle-command-palette', handleToggle);
+      window.removeEventListener('open-command-palette', handleOpen);
     };
   }, []);
 
