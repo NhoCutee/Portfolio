@@ -1,6 +1,7 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
+  allowedDevOrigins: ['172.20.10.*', 'localhost:3000'],
   transpilePackages: ['react-activity-calendar'],
   images: {
     dangerouslyAllowSVG: true,
