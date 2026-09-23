@@ -15,6 +15,7 @@ import { chatSuggestions } from '@/config/ChatPrompt';
 import { heroConfig } from '@/config/Hero';
 import { useHapticFeedback } from '@/hooks/use-haptic-feedback';
 import { cn } from '@/lib/utils';
+import { Maximize2, Minimize2 } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 
@@ -44,8 +45,28 @@ const ChatBubble: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>(initialMessages);
   const [newMessage, setNewMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isMaximized, setIsMaximized] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const { triggerHaptic, isMobile } = useHapticFeedback();
+
+  // Auto-resize if any bot message is long, contains email, lists, or code
+  const hasLongMessage = messages.some(
+    (m) =>
+      m.sender === 'bot' &&
+      (m.text.length > 180 ||
+        m.text.includes('@') ||
+        m.text.includes('\n- ') ||
+        m.text.includes('```')),
+  );
+
+  const chatWindowClassName = cn(
+    'transition-all duration-300 ease-in-out',
+    isMaximized
+      ? 'sm:w-[720px] sm:max-w-[94vw] sm:h-[85vh] sm:max-h-[850px]'
+      : hasLongMessage
+        ? 'sm:w-[560px] sm:max-w-[90vw] sm:h-[700px] sm:max-h-[85vh]'
+        : 'sm:w-[460px] sm:max-w-[90vw] sm:h-[620px] sm:max-h-[80vh]',
+  );
 
   // Auto-scroll to bottom when new messages are added
   useEffect(() => {
@@ -257,9 +278,10 @@ const ChatBubble: React.FC = () => {
 
   return (
     <ExpandableChat
-      className="mt-4 ml-4 max-h-[95vh] max-w-[calc(100vw-2rem)] hover:cursor-pointer sm:max-w-[calc(100vw-4rem)] md:max-w-xl"
+      className="mt-4 ml-4"
+      chatWindowClassName={chatWindowClassName}
       position="bottom-right"
-      size="lg"
+      size="xl"
       icon={<ChatBubbleIcon className="h-6 w-6" />}
     >
       <ExpandableChatHeader>
@@ -280,6 +302,21 @@ const ChatBubble: React.FC = () => {
             </div>
           </div>
         </div>
+        <div className="flex items-center gap-1">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="text-muted-foreground hover:text-foreground hidden h-8 w-8 sm:flex"
+            onClick={() => setIsMaximized((prev) => !prev)}
+            title={isMaximized ? 'Thu nhỏ cửa sổ' : 'Phóng to cửa sổ'}
+          >
+            {isMaximized ? (
+              <Minimize2 className="h-4 w-4" />
+            ) : (
+              <Maximize2 className="h-4 w-4" />
+            )}
+          </Button>
+        </div>
       </ExpandableChatHeader>
 
       <ExpandableChatBody>
@@ -289,67 +326,117 @@ const ChatBubble: React.FC = () => {
               <div
                 key={message.id}
                 className={cn(
-                  'flex w-max max-w-xs flex-col gap-2 rounded-lg px-3 py-2 text-sm',
+                  'flex w-fit max-w-[92%] flex-col gap-1.5 rounded-2xl px-3.5 py-2.5 text-sm transition-all duration-200 sm:max-w-[88%]',
                   message.sender === 'user'
-                    ? 'text-secondary bg-muted ml-auto'
-                    : 'bg-muted',
+                    ? 'ml-auto rounded-tr-xs border border-neutral-800 bg-neutral-900 text-neutral-50 shadow-xs dark:border-zinc-700/80 dark:bg-zinc-800 dark:text-zinc-100'
+                    : 'bg-muted/80 text-foreground border-border/50 rounded-tl-xs border shadow-xs',
                 )}
               >
-                <div className="flex items-start space-x-2">
+                <div className="flex w-full min-w-0 items-start gap-2.5">
                   {message.sender === 'bot' && (
-                    <Avatar className="border-primary h-6 w-6 border-2 bg-blue-300 dark:bg-yellow-300">
+                    <Avatar className="border-primary mt-0.5 h-6 w-6 shrink-0 border-2 bg-blue-300 dark:bg-yellow-300">
                       <AvatarImage src="/assets/logo.png" alt="Assistant" />
                       <AvatarFallback>AI</AvatarFallback>
                     </Avatar>
                   )}
-                  <div className="max-w-xs flex-1 md:max-w-sm">
-                    <div className="flex items-center gap-2">
-                      <div className="prose prose-sm dark:prose-invert max-w-none flex-1">
-                        {message.text ? (
-                          <ReactMarkdown
-                            components={{
-                              a: (props) => (
-                                <a
-                                  {...props}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="break-words text-blue-500 underline hover:text-blue-700"
-                                />
-                              ),
-                              // Custom paragraph component to remove default margins
-                              p: (props) => (
-                                <p {...props} className="m-0 leading-relaxed" />
-                              ),
-                              // Custom list components
-                              ul: (props) => (
-                                <ul {...props} className="m-0 pl-4" />
-                              ),
-                              ol: (props) => (
-                                <ol {...props} className="m-0 pl-4" />
-                              ),
-                              li: (props) => <li {...props} className="m-0" />,
-                              // Custom strong/bold component
-                              strong: (props) => (
-                                <strong {...props} className="font-semibold" />
-                              ),
-                            }}
-                          >
-                            {message.text}
-                          </ReactMarkdown>
-                        ) : (
-                          message.isStreaming && (
-                            <span className="text-muted-foreground">
-                              Thinking...
-                            </span>
-                          )
-                        )}
+                  <div className="min-w-0 flex-1 overflow-hidden">
+                    {message.sender === 'user' ? (
+                      <p className="m-0 text-sm leading-relaxed font-normal [overflow-wrap:anywhere] break-words text-neutral-50 dark:text-zinc-100">
+                        {message.text}
+                      </p>
+                    ) : (
+                      <div className="flex items-center gap-2">
+                        <div className="prose prose-sm dark:prose-invert max-w-none flex-1 [overflow-wrap:anywhere] break-words">
+                          {message.text ? (
+                            <ReactMarkdown
+                              components={{
+                                // Custom link component
+                                a: (props) => (
+                                  <a
+                                    {...props}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-primary font-medium break-all underline hover:opacity-80"
+                                  />
+                                ),
+                                // Custom paragraph component to remove default margins
+                                p: (props) => (
+                                  <p
+                                    {...props}
+                                    className="m-0 leading-relaxed [overflow-wrap:anywhere] break-words"
+                                  />
+                                ),
+                                // Custom inline code component
+                                code: ({
+                                  children,
+                                  className,
+                                  ...props
+                                }: React.HTMLAttributes<HTMLElement>) => (
+                                  <code
+                                    className={cn(
+                                      'rounded bg-black/10 px-1 py-0.5 font-mono text-xs break-all dark:bg-white/10',
+                                      className,
+                                    )}
+                                    {...props}
+                                  >
+                                    {children}
+                                  </code>
+                                ),
+                                // Custom pre/code-block component
+                                pre: (
+                                  props: React.HTMLAttributes<HTMLPreElement>,
+                                ) => (
+                                  <pre
+                                    className="my-2 max-w-full overflow-x-auto rounded-lg bg-black/10 p-2.5 font-mono text-xs dark:bg-white/10"
+                                    {...props}
+                                  />
+                                ),
+                                // Custom list components
+                                ul: (props) => (
+                                  <ul
+                                    {...props}
+                                    className="m-0 space-y-1 pl-4"
+                                  />
+                                ),
+                                ol: (props) => (
+                                  <ol
+                                    {...props}
+                                    className="m-0 space-y-1 pl-4"
+                                  />
+                                ),
+                                li: (props) => (
+                                  <li
+                                    {...props}
+                                    className="m-0 [overflow-wrap:anywhere] break-words"
+                                  />
+                                ),
+                                // Custom strong/bold component
+                                strong: (props) => (
+                                  <strong
+                                    {...props}
+                                    className="text-foreground font-semibold"
+                                  />
+                                ),
+                              }}
+                            >
+                              {message.text}
+                            </ReactMarkdown>
+                          ) : (
+                            message.isStreaming && (
+                              <span className="text-muted-foreground flex items-center gap-1.5">
+                                <span className="bg-primary size-1.5 animate-ping rounded-full" />
+                                Thinking...
+                              </span>
+                            )
+                          )}
+                        </div>
                       </div>
-                    </div>
+                    )}
                     <p
                       className={cn(
-                        'mt-1 text-xs',
+                        'mt-1.5 text-[10px]',
                         message.sender === 'user'
-                          ? 'text-secondary'
+                          ? 'text-right text-neutral-400 dark:text-zinc-400'
                           : 'text-muted-foreground',
                       )}
                       suppressHydrationWarning

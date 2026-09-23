@@ -36,10 +36,12 @@ interface ExpandableChatProps extends React.HTMLAttributes<HTMLDivElement> {
   position?: ChatPosition;
   size?: ChatSize;
   icon?: React.ReactNode;
+  chatWindowClassName?: string;
 }
 
 const ExpandableChat: React.FC<ExpandableChatProps> = ({
   className,
+  chatWindowClassName,
   position = 'bottom-right',
   size = 'md',
   icon,
@@ -53,20 +55,17 @@ const ExpandableChat: React.FC<ExpandableChatProps> = ({
 
   return (
     <div
-      className={cn(
-        `fixed ${chatConfig.positions[position]} z-50 hover:cursor-pointer`,
-        className,
-      )}
+      className={cn(`fixed ${chatConfig.positions[position]} z-50`, className)}
       {...props}
     >
       <div
         ref={chatRef}
         className={cn(
-          'bg-background fixed inset-0 flex h-full w-full flex-col overflow-hidden border shadow-md transition-all duration-250 ease-out sm:absolute sm:inset-auto sm:h-[80vh] sm:w-[90vw] sm:rounded-lg',
+          'bg-background fixed inset-0 flex h-full w-full flex-col overflow-hidden border shadow-md transition-all duration-300 ease-out sm:absolute sm:inset-auto sm:h-[80vh] sm:w-[90vw] sm:rounded-lg',
           chatConfig.chatPositions[position],
           chatConfig.dimensions[size],
           isOpen ? chatConfig.states.open : chatConfig.states.closed,
-          className,
+          chatWindowClassName || className,
         )}
       >
         {children}
