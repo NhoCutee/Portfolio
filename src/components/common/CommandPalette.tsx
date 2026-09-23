@@ -22,6 +22,7 @@ import {
   Share2,
   Wrench,
 } from 'lucide-react';
+import { Link } from 'next-view-transitions';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -32,6 +33,8 @@ interface CommandItemType {
   icon: React.ReactNode;
   action: () => void;
   group: 'navigation' | 'features' | 'actions';
+  url?: string;
+  external?: boolean;
 }
 
 export function CommandPalette() {
@@ -155,22 +158,9 @@ export function CommandPalette() {
     setOpen(false);
   };
 
-  const handleGitHub = () => {
-    window.open('https://github.com/NhoCutee', '_blank');
+  const openExternal = (url: string) => {
     setOpen(false);
-  };
-
-  const handleInstagram = () => {
-    window.open('https://instagram.com/meobone', '_blank');
-    setOpen(false);
-  };
-
-  const handleLinkedIn = () => {
-    window.open(
-      'https://www.linkedin.com/in/huy-nguy%E1%BB%85n-quang-278ab0367/',
-      '_blank',
-    );
-    setOpen(false);
+    window.open(url, '_blank', 'noopener,noreferrer');
   };
 
   const handleToggleCat = () => {
@@ -196,6 +186,7 @@ export function CommandPalette() {
       label: 'Home',
       description: 'Navigate to the homepage',
       icon: <Home />,
+      url: '/',
       action: () => handleNavigate('/'),
       group: 'navigation',
     },
@@ -204,6 +195,7 @@ export function CommandPalette() {
       label: 'Work Experience',
       description: 'View work experience and employment history',
       icon: <Briefcase />,
+      url: '/work-experience',
       action: () => handleNavigate('/work-experience'),
       group: 'navigation',
     },
@@ -212,6 +204,7 @@ export function CommandPalette() {
       label: 'Projects',
       description: 'View all projects and portfolio work',
       icon: <FolderKanban />,
+      url: '/projects',
       action: () => handleNavigate('/projects'),
       group: 'navigation',
     },
@@ -220,6 +213,7 @@ export function CommandPalette() {
       label: 'Resume',
       description: 'View and download resume',
       icon: <FileText />,
+      url: '/resume',
       action: () => handleNavigate('/resume'),
       group: 'navigation',
     },
@@ -228,6 +222,7 @@ export function CommandPalette() {
       label: 'Gears',
       description: 'View hardware and equipment setup',
       icon: <Wrench />,
+      url: '/gears',
       action: () => handleNavigate('/gears'),
       group: 'navigation',
     },
@@ -236,6 +231,7 @@ export function CommandPalette() {
       label: 'Contact',
       description: 'Get in touch',
       icon: <Contact />,
+      url: '/contact',
       action: () => handleNavigate('/contact'),
       group: 'navigation',
     },
@@ -244,6 +240,7 @@ export function CommandPalette() {
       label: 'Secret Page',
       description: '🎉 You found it!',
       icon: <FileText />,
+      url: '/secret',
       action: () => handleNavigate('/secret'),
       group: 'navigation',
     },
@@ -274,7 +271,9 @@ export function CommandPalette() {
       label: 'GitHub',
       description: 'View GitHub profile',
       icon: <Github />,
-      action: handleGitHub,
+      url: 'https://github.com/NhoCutee',
+      external: true,
+      action: () => openExternal('https://github.com/NhoCutee'),
       group: 'actions',
     },
     {
@@ -282,7 +281,9 @@ export function CommandPalette() {
       label: 'Instagram',
       description: 'View Instagram profile',
       icon: <Instagram />,
-      action: handleInstagram,
+      url: 'https://instagram.com/meobone',
+      external: true,
+      action: () => openExternal('https://instagram.com/meobone'),
       group: 'actions',
     },
     {
@@ -290,7 +291,12 @@ export function CommandPalette() {
       label: 'LinkedIn',
       description: 'View LinkedIn profile',
       icon: <Linkedin />,
-      action: handleLinkedIn,
+      url: 'https://www.linkedin.com/in/huy-nguy%E1%BB%85n-quang-278ab0367/',
+      external: true,
+      action: () =>
+        openExternal(
+          'https://www.linkedin.com/in/huy-nguy%E1%BB%85n-quang-278ab0367/',
+        ),
       group: 'actions',
     },
   ];
@@ -301,6 +307,72 @@ export function CommandPalette() {
   );
   const featureCommands = commands.filter((cmd) => cmd.group === 'features');
   const actionCommands = commands.filter((cmd) => cmd.group === 'actions');
+
+  const renderCommandItem = (command: CommandItemType) => {
+    const itemContent = (
+      <>
+        {command.icon}
+        <div className="flex flex-col">
+          <span>{command.label}</span>
+          <span className="text-muted-foreground text-xs">
+            {command.description}
+          </span>
+        </div>
+      </>
+    );
+
+    if (command.url) {
+      if (command.external) {
+        return (
+          <CommandItem
+            key={command.id}
+            value={`${command.label} ${command.description}`}
+            onSelect={command.action}
+            className="cursor-pointer p-0"
+          >
+            <a
+              href={command.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setOpen(false)}
+              className="flex w-full items-center gap-2 px-2 py-1.5 text-inherit no-underline outline-none select-none"
+            >
+              {itemContent}
+            </a>
+          </CommandItem>
+        );
+      }
+
+      return (
+        <CommandItem
+          key={command.id}
+          value={`${command.label} ${command.description}`}
+          onSelect={command.action}
+          className="cursor-pointer p-0"
+        >
+          <Link
+            href={command.url}
+            onClick={() => setOpen(false)}
+            className="flex w-full items-center gap-2 px-2 py-1.5 text-inherit no-underline outline-none select-none"
+          >
+            {itemContent}
+          </Link>
+        </CommandItem>
+      );
+    }
+
+    return (
+      <CommandItem
+        key={command.id}
+        value={`${command.label} ${command.description}`}
+        onSelect={command.action}
+        onClick={command.action}
+        className="cursor-pointer"
+      >
+        {itemContent}
+      </CommandItem>
+    );
+  };
 
   return (
     <CommandDialog
@@ -316,21 +388,7 @@ export function CommandPalette() {
         {navigationCommands.length > 0 && (
           <>
             <CommandGroup heading="Navigation">
-              {navigationCommands.map((command) => (
-                <CommandItem
-                  key={command.id}
-                  onSelect={command.action}
-                  className="cursor-pointer"
-                >
-                  {command.icon}
-                  <div className="flex flex-col">
-                    <span>{command.label}</span>
-                    <span className="text-muted-foreground text-xs">
-                      {command.description}
-                    </span>
-                  </div>
-                </CommandItem>
-              ))}
+              {navigationCommands.map(renderCommandItem)}
             </CommandGroup>
             <CommandSeparator />
           </>
@@ -339,21 +397,7 @@ export function CommandPalette() {
         {featureCommands.length > 0 && (
           <>
             <CommandGroup heading="Features">
-              {featureCommands.map((command) => (
-                <CommandItem
-                  key={command.id}
-                  onSelect={command.action}
-                  className="cursor-pointer"
-                >
-                  {command.icon}
-                  <div className="flex flex-col">
-                    <span>{command.label}</span>
-                    <span className="text-muted-foreground text-xs">
-                      {command.description}
-                    </span>
-                  </div>
-                </CommandItem>
-              ))}
+              {featureCommands.map(renderCommandItem)}
             </CommandGroup>
             <CommandSeparator />
           </>
@@ -361,21 +405,7 @@ export function CommandPalette() {
 
         {actionCommands.length > 0 && (
           <CommandGroup heading="Actions">
-            {actionCommands.map((command) => (
-              <CommandItem
-                key={command.id}
-                onSelect={command.action}
-                className="cursor-pointer"
-              >
-                {command.icon}
-                <div className="flex flex-col">
-                  <span>{command.label}</span>
-                  <span className="text-muted-foreground text-xs">
-                    {command.description}
-                  </span>
-                </div>
-              </CommandItem>
-            ))}
+            {actionCommands.map(renderCommandItem)}
           </CommandGroup>
         )}
       </CommandList>
