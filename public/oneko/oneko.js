@@ -105,6 +105,20 @@
 
     document.body.appendChild(nekoEl);
 
+    try {
+      if (localStorage.getItem('oneko-cat-enabled') === 'false') {
+        nekoEl.style.display = 'none';
+      }
+    } catch {}
+
+    window.addEventListener('oneko-cat-changed', function (e) {
+      try {
+        if (e && e.detail && typeof e.detail.enabled === 'boolean') {
+          nekoEl.style.display = e.detail.enabled ? 'block' : 'none';
+        }
+      } catch {}
+    });
+
     document.addEventListener('mousemove', function (event) {
       mousePosX = event.clientX;
       mousePosY = event.clientY;

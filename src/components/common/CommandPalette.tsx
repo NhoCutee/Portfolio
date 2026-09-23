@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/command';
 import {
   Briefcase,
+  Cat,
   Contact,
   FileText,
   FolderKanban,
@@ -35,7 +36,33 @@ interface CommandItemType {
 
 export function CommandPalette() {
   const [open, setOpen] = useState(false);
+  const [catEnabled, setCatEnabled] = useState(true);
   const router = useRouter();
+
+  // Sync catEnabled state from localStorage
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem('oneko-cat-enabled');
+      if (saved !== null) {
+        setCatEnabled(saved === 'true');
+      }
+    } catch {}
+
+    const handleSync = (e: Event) => {
+      try {
+        const customEvent = e as CustomEvent<{ enabled?: boolean }>;
+        if (customEvent.detail?.enabled !== undefined) {
+          setCatEnabled(customEvent.detail.enabled);
+        } else {
+          const saved = localStorage.getItem('oneko-cat-enabled');
+          setCatEnabled(saved !== 'false');
+        }
+      } catch {}
+    };
+
+    window.addEventListener('oneko-cat-changed', handleSync);
+    return () => window.removeEventListener('oneko-cat-changed', handleSync);
+  }, []);
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -146,6 +173,22 @@ export function CommandPalette() {
     setOpen(false);
   };
 
+  const handleToggleCat = () => {
+    const nextState = !catEnabled;
+    setCatEnabled(nextState);
+    try {
+      localStorage.setItem('oneko-cat-enabled', String(nextState));
+    } catch {}
+    const neko = document.getElementById('oneko');
+    if (neko) {
+      neko.style.display = nextState ? 'block' : 'none';
+    }
+    window.dispatchEvent(
+      new CustomEvent('oneko-cat-changed', { detail: { enabled: nextState } }),
+    );
+    setOpen(false);
+  };
+
   const commands: CommandItemType[] = [
     // Navigation
     {
@@ -203,6 +246,18 @@ export function CommandPalette() {
       icon: <FileText />,
       action: () => handleNavigate('/secret'),
       group: 'navigation',
+    },
+
+    // Features
+    {
+      id: 'toggle-cat',
+      label: catEnabled ? 'Hide Oneko Cat' : 'Show Oneko Cat',
+      description: catEnabled
+        ? 'Hide the running 8-bit cat from your screen'
+        : 'Display the 8-bit cat chasing your cursor',
+      icon: <Cat className="h-4 w-4 text-amber-500" />,
+      action: handleToggleCat,
+      group: 'features',
     },
 
     // Actions
