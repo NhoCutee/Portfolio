@@ -71,11 +71,4 @@ export const githubConfig = {
     title: 'Loading contributions...',
     description: 'Fetching your GitHub activity data',
   },
-
-  // ForkYou.dev Coding Time Configuration
-  codingTime: {
-    enabled: false, // Set to false to disable coding time display
-    username: 'kroszborg', // Your ForkYou.dev username
-    displayName: 'Cursor Activity', // Display name (e.g., 'Cursor Activity', 'Coding Time')
-  },
 };

@@ -90,8 +90,8 @@ NEXT_PUBLIC_UMAMI_ID="your-umami-website-id"
 1. Clone this repository:
 
    ```bash
-   git clone https://github.com/Kroszborg/sleek-portfolio.git
-   cd sleek-portfolio
+   git clone https://github.com/NhoCutee/Portfolio.git
+   cd Portfolio
    ```
 
 2. Install dependencies:
