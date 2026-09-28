@@ -80,7 +80,7 @@ export const heroConfig = {
   // Description Configuration
   description: {
     template:
-      'I build high-performance web applications using {skills:0}, {skills:1}, {skills:2}, {skills:3}, {skills:4} and {skills:5}. Passionate about <b>real-time collaboration</b>, <b>scalable SaaS architectures</b>, and <b>AI-driven workflows</b>.',
+      'I build high-performance web applications using {skills:0}, {skills:1}, {skills:2}, {skills:3}, {skills:4} and {skills:5}. Passionate about <b>resilient distributed backend systems</b>, <b>high-performance web architecture</b>, and <b>responsive UI craft</b>.',
   },
 
   // Buttons Configuration
